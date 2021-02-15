@@ -1,65 +1,54 @@
-# Hand Gesture Recognition
-• Extract and segment hand region from the video sequence.
+# Face Tagging
 
-• Recognize the number of fingers from the segmented hand region by using Convex Hull.
+<p>The project tries to clone the functionality of a Google Images Feature that automatically groups images of people.</p>
 
-## Getting Started
+## Team Members
+[Gagandeep Singh](https://github.com/gaganmanku96)<br>
+> Worked to combining all different parts together.
 
-How to use
-```    
-git clone https://github.com/aakashjhawar/Hand-Gesture-Recognition.git
-cd Hand-Gesture-Recognition
+[Sreenithi Sridharan](https://github.com/sreenithi)
+> Developed on an optimzied algorithm to group similar faces together.
+
+[Shatakshi Pachori](https://github.com/shat700)
+> Worked on the visualization part to display all grouped images.
+
+[Nilesh Bhosale](https://github.com/Bhosalenileshn)
+> Added documentation and explanations in various parts of the code.
+
+## How to run
+### 1. Clone the repo
 ```
-Run the Finger_count.ipynb Jupyter Notebook
- 
-## Prerequisites
-
-- Python 3.5
-- OpenCV
+$ git clone https://github.com/gaganmanku96/Face-Tagging
+$ cd Face-Tagging
 ```
-sudo apt-get install python-opencv
+### 2. Setup the Facical Landmark Encoding API (Optional)
+> To be able to train model on new images you would need the API to work.
+
+You can setup it by using any of the mentioned method
+#### a) Docker
 ```
-## Procedure
-
-* Strategy for counting fingers
-    * Garb an ROI (Region of interest)
-		* Calculate a running average background value for 60 frames of video
-		* Once average value is found, then the hand can enter the ROI
-* Set a ROI and calculate the average running value for some amount of frames
-* Then once a hand enters, we can detect change and apply thresholding
-* Strategy for counting fingers
-		* Once the hand enters the ROI, we will use a Convel Hull to draw a polygon around the hand
-		* Using some maths, we'll calculate the center of the hand against the angle of outer points to infer finger count
-* The next step is to use thresholding to grab the hand segment from the ROI
-* Now that we have the hand segment, the next step is to actually count the fingers behind held up
-* We can do this by utilizing a Convex Hull
-* A convex hull draws a polygon by connecting points around the most external points in a frame
-* In our case, this set of points is actually just our threshold image of a hand. 
-* We can expect a general shape of our polygon to be something like 
-* Then using a ratio of that distance we create a circle
-* Any points outside of this circle far away enough from the bottom, should be extended fingers
-
-## Working 
-
-#### Image-
-![Image of segmented hand region](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/hand_convex.png)
-
-
-## Result
-
-#### One
-![One](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/one.png)
-
-#### Two
-![Two](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/two.png)
-
-#### Three
-![Three](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/three.png)
-
-#### Four
-![Four](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/four.png)
-
-#### Five
-![Five](https://github.com/aakashjhawar/Hand-Gesture-Recognition/blob/master/images/five.png)
-
-###### *Segmentation of some image are improper as the lighting in the room was uneven.*
+$ docker pull gaganmanku96/facial_landmarks_api
+$ docker run -p 5000:5000 gaganmanku96/facial_landmarks_api
+```
+#### b) Docker Compose
+```
+$ docker-compose up
+```
+### 3. Run the application
+```
+$ jupyter notebook Main.ipynb
+```
+## Workflow
+### 1. Facial Points Extraction
+A pretrained Resnet Model is used to extract 128D facial landmark points.
+![feature_extraction_process](resources/workflow/feature_extraction_process.PNG)
+### 2. Apply Algorithm
+KNN algorithm is used to find the similar group.
+![KNN Algorithm](resources/workflow/knn_algorithm.PNG)
+The process works in this manner.<br>
+1. Train a KNN model on first image (128D landmark points).
+2. Predict on rest of the images.
+3. If any image falls in 0.5 of neighbourhood then they are similar faces.
+4. Repeat the step until all the images are covered.
+5. Display all the groups
+![feature_extraction_process](resources/workflow/groups.PNG)
