@@ -16,8 +16,7 @@ You can setup it by using any of the mentioned method
 #### a) Docker
 ```
 $ docker pull gaganmanku96/facial_landmarks_api
-$ docker run -p 5000:5000 gaganmanku96/facial_landmarks_api
-```
+
 #### b) Docker Compose
 ```
 $ docker-compose up
@@ -29,14 +28,11 @@ $ jupyter notebook Main.ipynb
 ## Workflow
 ### 1. Facial Points Extraction
 A pretrained Resnet Model is used to extract 128D facial landmark points.
-![feature_extraction_process](Face-Tagging/feature_extraction_process.PNG)
 ### 2. Apply Algorithm
 KNN algorithm is used to find the similar group.
-![KNN Algorithm](Face-Tagging/knn_algorithm.PNG)
 The process works in this manner.<br>
 1. Train a KNN model on first image (128D landmark points).
 2. Predict on rest of the images.
 3. If any image falls in 0.5 of neighbourhood then they are similar faces.
 4. Repeat the step until all the images are covered.
 5. Display all the groups
-![feature_extraction_process](Face-Tagging/groups.PNG)
